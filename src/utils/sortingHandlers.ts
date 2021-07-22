@@ -3,6 +3,7 @@ import {
   IAverageNumberOfPostsPerUserPerMonth,
   ILongestPostByCharacterPerMonth,
   IPostWithMonthWeek,
+  ITotalPostsSplitByWeekNumber,
 } from "../models/post";
 
 export const sortByMonth = (
@@ -66,6 +67,17 @@ export const getAverageNumberOfPostsPerUserPerMonth = (
       month: index + 1,
       averageNumberOfPostsPerUser:
         Math.ceil(item.length / uniqueUsers.length) || 0,
+    };
+  });
+};
+
+export const getTotalPostsSplitByWeekNumber = (
+  posts: IPostWithMonthWeek[][]
+): ITotalPostsSplitByWeekNumber[] => {
+  return posts.map((item, index) => {
+    return {
+      week: index + 1,
+      totalPosts: item.length,
     };
   });
 };

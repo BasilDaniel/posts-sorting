@@ -23,9 +23,11 @@ const errorHandler: Middleware =
           switch (response.status) {
             case EStatusCodes.Unauthorized:
               message.error(response.data.error);
+              dispatch({ type: "auth/onLogout" });
               break;
             case EStatusCodes.InternalServerError:
               message.error("Something went wrong, contact administration.");
+              dispatch({ type: "auth/onLogout" });
               break;
 
             default:

@@ -6,6 +6,7 @@ import {
   getAverageCharacterLengthByMoth,
   getAverageNumberOfPostsPerUserPerMonth,
   getLongestPostByCharacterPerMonth,
+  getTotalPostsSplitByWeekNumber,
   sortByMonth,
   sortByWeek,
 } from "../utils/sortingHandlers";
@@ -41,6 +42,10 @@ export interface IAverageNumberOfPostsPerUserPerMonth {
   month: number;
   averageNumberOfPostsPerUser: number;
 }
+export interface ITotalPostsSplitByWeekNumber {
+  week: number;
+  totalPosts: number;
+}
 export interface IGetPostsParams {
   page: number;
   sl_token: string;
@@ -52,14 +57,14 @@ interface IState {
   averageNumberOfPostsPerUserPerMonth:
     | IAverageNumberOfPostsPerUserPerMonth[]
     | null;
-  sortedByWeek: IPostWithMonthWeek[][] | null;
+  totalPostsSplitByWeekNumber: ITotalPostsSplitByWeekNumber[] | null;
 }
 
 const initialState: IState = {
   averageCharacterLengthByMoth: null,
   longestPostByCharacterPerMonth: null,
   averageNumberOfPostsPerUserPerMonth: null,
-  sortedByWeek: null,
+  totalPostsSplitByWeekNumber: null,
 };
 
 export const post = createModel<IRootModel>()({
@@ -83,8 +88,11 @@ export const post = createModel<IRootModel>()({
     ): IState {
       return { ...state, averageNumberOfPostsPerUserPerMonth };
     },
-    setSortedByWeek(state, sortedByWeek: IPostWithMonthWeek[][]): IState {
-      return { ...state, sortedByWeek };
+    setTotalPostsSplitByWeekNumber(
+      state,
+      totalPostsSplitByWeekNumber: ITotalPostsSplitByWeekNumber[]
+    ): IState {
+      return { ...state, totalPostsSplitByWeekNumber };
     },
   },
   effects: (d) => {
@@ -127,7 +135,9 @@ export const post = createModel<IRootModel>()({
         d.post.setAverageNumberOfPostsPerUserPerMonth(
           getAverageNumberOfPostsPerUserPerMonth(sortedByMonth)
         );
-        d.post.setSortedByWeek(sortedByWeek);
+        d.post.setTotalPostsSplitByWeekNumber(
+          getTotalPostsSplitByWeekNumber(sortedByWeek)
+        );
       },
     };
   },
